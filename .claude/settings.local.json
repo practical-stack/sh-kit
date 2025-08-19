@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/Users/youngchang/shell-scripts/git/git-tools.sh doctor)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
