@@ -1,0 +1,30 @@
+# sh-kit - ZSH Configuration Template
+# 
+# This template shows the minimal configuration needed to use sh-kit.
+# Copy the relevant sections to your ~/.zshrc file.
+
+# =============================================================================
+# sh-kit Setup
+# =============================================================================
+
+# 1. Set the path to your sh-kit directory
+# Replace "/path/to/sh-kit" with your actual cloned path
+export SH_KIT_HOME="/path/to/sh-kit"
+
+# Examples:
+# export SH_KIT_HOME="$HOME/sh-kit"
+# export SH_KIT_HOME="$HOME/dev/sh-kit"
+# export SH_KIT_HOME="$HOME/projects/sh-kit"
+
+# 2. Add sh-kit commands to PATH
+export PATH="$SH_KIT_HOME/bin:$PATH"
+
+# =============================================================================
+# Installation Instructions
+# =============================================================================
+
+# 1. Copy the "sh-kit Setup" section to your ~/.zshrc
+# 2. Update SH_KIT_HOME to your actual path
+# 3. Reload your shell: source ~/.zshrc
+# 4. Test: gt doctor
+# 5. Optional: Set up .gitconfig using .gitconfig.tmpl
