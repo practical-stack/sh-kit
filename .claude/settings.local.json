@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(/Users/youngchang/shell-scripts/git/git-tools.sh doctor)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(gh pr close:*)",
+      "Bash(git stash:*)"
     ],
     "deny": [],
     "ask": []
