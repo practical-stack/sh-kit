@@ -1,0 +1,91 @@
+# Shell Scripts Collection - .gitignore
+
+# =============================================================================
+# OS Generated Files
+# =============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+# =============================================================================
+# Shell and Environment
+# =============================================================================
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# Shell history files
+.bash_history
+.zsh_history
+
+# Temporary shell files
+*.tmp
+*.temp
+.tmp/
+temp/
+
+# =============================================================================
+# Documentation and Build
+# =============================================================================
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# Log files
+*.log
+logs/
+
+# Documentation builds (if any)
+doc/build/
+docs/_build/
+
+# =============================================================================
+# Git and Version Control
+# =============================================================================
+# Git patches
+*.patch
+*.diff
+
+
+# =============================================================================
+# Dependencies and Cache
+# =============================================================================
+# Node modules (if any Node.js tools are added)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python cache (if any Python tools are added)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+
+
+
+# =============================================================================
+# Temporary and Cache
+# =============================================================================
+# macOS
+.AppleDouble
+.LSOverride
+
+# Linux
+.directory
+
+# Windows
+desktop.ini
+
+# Temporary files created by tools
+fzf_temp_*
+git_temp_*
+*.tmp.*

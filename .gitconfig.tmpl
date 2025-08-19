@@ -1,0 +1,327 @@
+# sh-kit - Git Configuration Template
+#
+# This template contains all aliases from a real working .gitconfig with sh-kit integration.
+# Copy the [alias] section to your ~/.gitconfig file.
+
+# =============================================================================
+# Git Aliases for sh-kit
+# =============================================================================
+
+[alias]
+	# Basic Git shortcuts with explanations
+	alias-basic = "!#----------------------------------------------------------;\n\
+		git alias | head -7"
+	ci = "!# Commit changes;\n \
+		git commit"
+	co = "!# Checkout branch or commit;\n \
+		git checkout"
+	sw = "!# Switch to branch;\n \
+		git switch"
+	re = "!# Restore files;\n \
+		git restore"
+	s = "!# Short status;\n \
+		git status -s"
+	
+	# File management
+	assume = "!# Assume unchanged - Ignore local changes;\n \
+		git update-index --assume-unchanged"
+	assumed = "!# Assumed files - List assumed unchanged files;\n \
+		git ls-files -v | grep ^h | cut -c 3-"
+	unassume = "!# Unassume - Stop ignoring local changes;\n \
+		git update-index --no-assume-unchanged"
+	
+	# Custom utilities
+	alias-custom = "!#----------------------------------------------------------;\n\
+		git alias | egrep 'custom'"
+	fa = "!# Fetch all - Fetch all remotes and prune deleted branches;\n \
+		git fetch --all --prune"
+	o = "!# custom - open page of remote repo;\n \
+		git open"
+	c = "!# custom - commit;\n \
+		git commit"
+	cm = "!# custom - commit with message;\n \
+		f() { git commit -m \"$*\"; }; f"
+	main-or-master = "!# custom - Echo master or main;\n \
+		if `git show-ref --quiet refs/heads/main`; \
+		then echo main;\
+		else echo master;\
+		fi"
+	current-branch-name = "!# custom - current branch name;\n \
+		echo $(git symbolic-ref --short HEAD)"
+	pm = "!# custom - Switch to main branch and pull origin main branch.;\n\
+		git checkout $(git main-or-master) && git pull origin $(git main-or-master)"
+	
+	# Shell Scripts Collection - Branch operations
+	pb = "!# Pull branch - Pull selected branch;\n \
+		gt branch-tools pb"
+	dsm = "!# Delete squash merged - Delete squash merged branches;\n \
+		gt branch-clean dsm"
+	dsmb = "!# Delete squash merged by target - Delete squash merged by target branch;\n \
+		gt branch-clean dsmb"
+	
+	# Reset operations
+	rs = "!# Reset soft - Reset to selected commit (mixed);\n \
+		git reset $(gt commit-select) --mixed"
+	rsh = "!# Reset hard - Reset to selected commit (hard);\n \
+		git reset $(gt commit-select) --hard"
+	rsb = "!# Reset selected branch - Reset to selected branch (hard);\n \
+		git reset $(gt branch-select) --hard"
+	
+	# Rebase operations
+	rbm = "!# Rebase main - Rebase current branch onto main/master;\n \
+		HUSKY=0 git rebase $(git main-or-master)"
+	rbo = "!# Rebase onto - Rebase selected commits onto selected branch;\n \
+		git rebase --onto $(gt branch-select) $(gt commit-select)^"
+	rbom = "!# Rebase onto main - Rebase selected commits onto main/master;\n \
+		git rebase --onto $(git main-or-master) $(gt commit-select)^"
+	
+	# Advanced Git Tools
+	rpo = "!# Replay onto - Replay commits onto selected branch;\n \
+		gt replay-onto"
+	rpom = "!# Replay onto main - Replay commits onto main/master;\n \
+		gt replay-onto-main"
+	cr = "!# custom - cherry pick selected branch.;\n\
+		git cherry-pick"
+	cb = "!# custom - Switch or Checkout to new branch.;\n\
+		git checkout -b"
+	
+	# Push operations
+	ps = "!# custom - Push current branch to remote.;\n\
+		git push origin $(git branch --show-current)"
+	psf = "!# custom - Push current branch to remote force.;\n\
+		git push origin $(git branch --show-current) --force-with-lease --no-verify"
+	pfs = "!# Push force selected - Force push selected branches;\n \
+		gt force-push-selected"
+	pl = "!# custom - Pull current branch from remote.;\n\
+		git pull origin $(git branch --show-current)"
+	
+	# Log and commit operations
+	alias-log = "!#--------g--------------------------------------------------;\n\
+		git alias | egrep 'log|commit-'"
+	commit-select = "!# Commit select - Interactive commit selection;\n \
+		gt commit-select"
+	c-s = "!# Commit select - Interactive commit selection;\n \
+		gt commit-select"
+	commit-copy = "!# Commit copy - Copy selected commit hash to clipboard;\n \
+		gt commit-select | pbcopy && echo Copied : $(pbpaste)"
+	c-c = "!git commit-copy"
+	
+	# Enhanced log formats
+	l = "log \
+		--color --graph --decorate \
+		--date=format:'%Y-%m-%d' \
+		--abbrev-commit \
+		--pretty=format:'%C(red)%h%C(auto)%d %s %C(green)(%cr)%C(bold blue) %an'"
+	ld = "log \
+		--color --graph --decorate \
+		--date=format:'%Y-%m-%d %H:%M:%S' \
+		--abbrev-commit \
+		--pretty=format:'%C(red)%h%C(auto)%d %s %C(green)(%ad)%C(bold blue) %an'"
+	ll = "log \
+		--color --graph --decorate \
+		--date=format:'%Y-%m-%d' \
+		--abbrev-commit \
+		--pretty=format:'%C(red)%H%C(auto)%d %s %C(green)(%cr)%C(bold blue) %an'"
+	lld = "log \
+		--color --graph --decorate \
+		--date=format:'%Y-%m-%d %H:%M:%S' \
+		--abbrev-commit \
+		--pretty=format:'%C(red)%H%C(auto)%d %s %C(green)(%ad)%C(bold blue) %an'"
+	lh = "!# Show log graph | head \n\
+		f() { \
+		    if [ $# = 0 ]; then \
+		        git l -25; \
+		    else \
+		        git l -$1; \
+		    fi; \
+		    echo ''; \
+		}; f"
+	ranking = "!# List commit counts of contributors;\n\
+		git shortlog -sn"
+	
+	# Branch management
+	alias-branch = "!#----------------------------------------------------------;\n\
+		git alias | egrep '[bB]ranch'"
+	b0 = "!# Print current branch.;\n\
+		git branch | awk '/^\\*/{print $2}'"
+	back = "!# Back up current branch.;\n\
+		echo created new branch: backup-`git b0`;\
+		git branch backup-`git b0`"
+	bb = "!# Branch browser - Interactive branch management;\n \
+		gt branch-tools"
+	branch-clean = "!# Branch clean - Clean merged branches;\n \
+		gt branch-clean"
+	branch-list = "!# Branch list - List branches with metadata;\n \
+		gt branch-list"
+	b-l = "!# Branch list - List branches with metadata;\n \
+		gt branch-list"
+	branch-list-all = "!# Branch list all - List all branches including remote;\n \
+		gt branch-list-all"
+	b-la = "!# Branch list all - List all branches including remote;\n \
+		gt branch-list-all"
+	branch-select = "!# Branch select - Interactive branch selection;\n \
+		gt branch-select"
+	b-s = "!# Branch select - Interactive branch selection;\n \
+		gt branch-select"
+	branch-copy = "!# Branch copy - Copy selected branch name to clipboard;\n \
+		gt branch-select | pbcopy && echo Copied : $(pbpaste)"
+	b-c = "!# Branch copy - Copy selected branch name to clipboard;\n \
+		git branch-copy"
+	branch-reset-hard = "!# Branch reset hard - Reset to selected branch (hard);\n \
+		git reset $(gt branch-select) --hard"
+	b-rsh = "!# Branch reset hard - Reset to selected branch (hard);\n \
+		git branch-reset-hard"
+	branch-reset = "!# Branch reset mixed - Reset to selected branch (mixed);\n \
+		git reset $(gt branch-select) --mixed"
+	b-rs = "!# Branch reset mixed - Reset to selected branch (mixed);\n \
+		git branch-reset-mix"
+	branch-reset-soft = "!# Branch reset soft - Reset to selected branch (soft);\n \
+		git reset $(gt branch-select) --soft"
+	b-rss = "!# Branch reset soft - Reset to selected branch (soft);\n \
+		git branch-reset-soft"
+	ch = "!# Checkout - Interactive branch management (alias for bb);\n \
+		gt branch-tools"
+	
+	# Sync operations
+	sync = "!# Sync - Sync with remote branch;\n \
+		gt sync"
+	update = "!# Update - Update with rebase;\n \
+		gt update"
+	
+	# Staging and diff operations
+	alias-stage = "!#----------------------------------------------------------;\n\
+		git alias | egrep '(add|diff|stage)' -i"
+	a = "!# Add selected - Add selected files to staging;\n \
+		gt diff-select | xargs git add"
+	aa = "!# Add all - Add all files to staging;\n \
+		git add ."
+	a-c = "!# Add and commit - Add selected files and commit;\n \
+		git a && git commit"
+	dc = "!# Discard changes - Discard selected file changes;\n \
+		gt diff-select | xargs git checkout -q --"
+	dac = "!# Discard all changes - Discard all file changes;\n \
+		git restore ."
+	diff-info = "!# Diff info - Show diff information;\n \
+		gt diff-info"
+	diff-select = "!# Diff select - Select files to stage;\n \
+		gt diff-select"
+	diff-unselect = "!# Diff unselect - Select files to unstage;\n \
+		gt diff-unselect"
+	unstage = "!# Unstage - Unstage selected files;\n \
+		gt diff-unselect | xargs git reset HEAD"
+	us = "!# Unstage - Unstage selected files;\n \
+		git unstage"
+	
+	# Stash operations
+	alias-stash = "!#----------------------------------------------------------;\n\
+		git alias | grep stash"
+	stash-apply = "!# Stash apply - Apply selected stash;\n \
+		gt stash-tools apply"
+	s-a = "!# Stash apply - Apply selected stash;\n \
+		gt stash-tools apply"
+	stash-drop = "!# Stash drop - Drop selected stash;\n \
+		gt stash-tools drop"
+	s-d = "!# Stash drop - Drop selected stash;\n \
+		gt stash-tools drop"
+	stash-list = "!# Stash list - List all stashes;\n \
+		gt stash-tools list"
+	s-l = "!# Stash list - List all stashes;\n \
+		gt stash-tools list"
+	stash-pop = "!# Stash pop - Pop selected stash;\n \
+		gt stash-tools pop"
+	s-p = "!# Stash pop - Pop selected stash;\n \
+		gt stash-tools pop"
+	stash-save = "!# Stash save - Save current changes to stash;\n \
+		gt stash-tools save"
+	s-s = "!# Stash save - Save current changes to stash;\n \
+		gt stash-tools save"
+	stash-select = "!# Stash select - Select stash interactively;\n \
+		gt stash-tools select"
+	
+	# Tag and alias operations
+	tag-refresh = "!# Tag refresh - Interactive tag refresh;\n \
+		gt tag-refresh"
+	alias-alias = "!#----------------------------------------------------------;\n\
+		git alias | grep alias"
+	alias = "!# Prints all aliases.;\n\
+		git config --list | egrep '^alias.+' | sed -e 's/^alias\\.//' | sed -e 's/^[^=]*=/\\'$'\\033[31m&\\033[(B\\033[m/' | column -t -s'=' | sed 's/!#* *//; s/;$//' | cut -c1-85"
+	al = "!# Alias selector - Interactive git alias selection;\n \
+		gt alias-select"
+	alias-doctor = "!# Alias doctor - Check dependencies and configuration;\n \
+		gt alias-doctor"
+
+# =============================================================================
+# Usage Examples
+# =============================================================================
+
+# After adding the aliases to your ~/.gitconfig:
+#
+# Core shell-scripts commands:
+# git bb               # Interactive branch management
+# git c-s              # Interactive commit selection  
+# git pfs              # Force push selected branches
+# git alias-doctor     # Check dependencies
+#
+# Branch operations:
+# git pb               # Pull selected branch
+# git dsm              # Delete squash-merged branches
+# git b-l              # List branches
+# git b-s              # Select branch
+#
+# Commit operations:
+# git rs               # Reset to selected commit (mixed)
+# git rsh              # Reset to selected commit (hard)
+# git c-c              # Copy selected commit hash
+#
+# Advanced operations:
+# git rpo              # Replay commits onto selected branch
+# git rpom             # Replay commits onto main
+# git rbo              # Rebase onto selected branch
+#
+# Push operations:
+# git ps               # Push current branch
+# git psf              # Push current branch with force
+# git pl               # Pull current branch
+# git pm               # Pull main/master
+
+# =============================================================================
+# Installation Instructions  
+# =============================================================================
+
+# Method 1: Copy relevant sections (recommended)
+# 1. Open your ~/.gitconfig file
+# 2. Copy the [alias] section from above
+# 3. Paste it into your .gitconfig file
+# 4. Save and test: git bb
+
+# Method 2: Quick essential setup
+# git config --global alias.bb "!gt branch-tools"
+# git config --global alias.c-s "!gt commit-select"
+# git config --global alias.pfs "!gt force-push-selected"
+# git config --global alias.alias-doctor "!gt alias-doctor"
+
+# Method 3: Include this file (advanced users)
+# [include]
+#     path = /path/to/sh-kit/.gitconfig.tmpl
+
+# =============================================================================
+# Prerequisites
+# =============================================================================
+
+# 1. sh-kit must be installed
+# 2. PATH must include sh-kit/bin directory  
+# 3. Test with: gt doctor
+# 4. Ensure git-tools.sh has execute permissions
+
+# =============================================================================
+# Benefits of This Configuration
+# =============================================================================
+
+# ✅ Complete Git workflow enhancement based on real usage
+# ✅ Interactive selection for all operations using fzf
+# ✅ Consistent gt command pattern throughout
+# ✅ Short, memorable aliases with descriptive comments
+# ✅ Copy-to-clipboard functionality for branches and commits
+# ✅ Enhanced logging with multiple format options
+# ✅ Comprehensive branch, commit, stash, and diff management
+# ✅ Advanced operations like replay-onto and force-push-selected
