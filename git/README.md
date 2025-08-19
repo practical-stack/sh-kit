@@ -1,177 +1,194 @@
 # sh-kit Git Tools
 
-체계적으로 정리된 Git 워크플로우 향상 도구 모음입니다.
+Comprehensive Git workflow enhancement tools with interactive operations.
 
-## 📁 디렉토리 구조
+[한국어 README](README.kr.md)
+
+## 📁 Directory Structure
 
 ```
 ~/sh-kit/
 ├── bin/
-│   └── gt -> ../git/git-tools.sh    # 심볼릭 링크로 연결된 실행 명령어
+│   └── gt -> ../git/git-tools.sh    # Symbolic link to executable command
 └── git/
-    ├── README.md               # 이 파일 (Git 도구 문서)
-    └── git-tools.sh            # 통합된 Git 도구 스크립트
+    ├── README.md               # This file (Git tools documentation)
+    ├── README.kr.md            # Korean Git tools documentation
+    ├── CLAUDE.md               # Development guidance for Claude Code
+    └── git-tools.sh            # Integrated Git tools script
 ```
 
 ## 🛠️ Git Tools
 
-### 주요 파일
+### Key Files
 
-- **`git/git-tools.sh`**: 모든 Git 도구들이 통합된 단일 스크립트
-- **`bin/gt`**: git-tools.sh로의 심볼릭 링크 (PATH에서 직접 실행)
+- **`git/git-tools.sh`**: Single script integrating all Git tools
+- **`bin/gt`**: Symbolic link to git-tools.sh (directly executable from PATH)
 
-### 사용 가능한 도구들
+### Available Tools
 
 #### 📂 Branch Tools
-- `gt branch-tools` (또는 `gt bb`) - 브랜치 관리
-- `gt branch-select` - 브랜치 인터랙티브 선택
-- `gt branch-list` - 브랜치 목록
-- `gt branch-clean` - 스쿼시 머지된 브랜치 삭제
+
+- `gt branch-tools` (or `gt bb`) - Branch management
+- `gt branch-select` - Interactive branch selection
+- `gt branch-list` - Branch listing
+- `gt branch-clean` - Delete squash-merged branches
 
 #### 💾 Commit Tools
-- `gt commit-select` (또는 `gt c-s`) - 커밋 인터랙티브 선택
+
+- `gt commit-select` (or `gt c-s`) - Interactive commit selection
 
 #### 📝 Diff & Staging Tools
-- `gt diff-tools` - 파일 diff 및 staging 도구
-- `gt diff-select` - 스테이징할 파일 선택
-- `gt diff-unselect` - 언스테이징할 파일 선택
+
+- `gt diff-tools` - File diff and staging tools
+- `gt diff-select` - Select files to stage
+- `gt diff-unselect` - Select files to unstage
 
 #### 📚 Stash Tools
-- `gt stash-tools` - stash 관리
+
+- `gt stash-tools` - Stash management
 
 #### 🔄 Sync Tools
-- `gt sync` - 원격 브랜치와 동기화
-- `gt update` - rebase로 업데이트
+
+- `gt sync` - Sync with remote branch
+- `gt update` - Update with rebase
 
 #### 🚀 Advanced Tools
-- `gt force-push-selected` (또는 `gt pfs`) - 인터랙티브 다중 브랜치 force push
-- `gt replay-onto` - 브랜치로 커밋 replay
-- `gt replay-onto-main` - 메인으로 커밋 replay
-- `gt tag-refresh` - 인터랙티브 태그 갱신
+
+- `gt force-push-selected` (or `gt pfs`) - Interactive multi-branch force push
+- `gt replay-onto` - Replay commits onto branch
+- `gt replay-onto-main` - Replay commits onto main
+- `gt tag-refresh` - Interactive tag refresh
 
 #### 🩺 Diagnostics
-- `gt doctor` - 의존성 체크
 
-## 🚀 사용법
+- `gt doctor` - Dependency check
 
-### 1. 설치
+## 🚀 Usage
+
+### 1. Installation
 
 ```bash
-# 1. 레포지토리 클론 (원하는 위치에)
-git clone <repository-url> <your-preferred-path>
-cd <your-preferred-path>
+# 1. Clone repository (to your preferred location)
+git clone <repository-url> sh-kit
+cd sh-kit
 
-# 2. 심볼릭 링크 생성 (아직 없다면)
+# 2. Create symbolic link (if not already exists)
 ln -s ../git/git-tools.sh bin/gt
 
-# 3. .zshrc에 PATH 추가
-# 현재 디렉토리 경로를 자동으로 사용하려면:
-echo "export SHELL_SCRIPTS_HOME=\"$(pwd)\"" >> ~/.zshrc
-echo "export PATH=\"\$SHELL_SCRIPTS_HOME/bin:\$PATH\"" >> ~/.zshrc
+# 3. Add to PATH in .zshrc
+# To automatically use current directory path:
+echo "export SH_KIT_HOME=\"$(pwd)\"" >> ~/.zshrc
+echo "export PATH=\"\$SH_KIT_HOME/bin:\$PATH\"" >> ~/.zshrc
 
-# 또는 수동으로 .zshrc 편집:
-# export SHELL_SCRIPTS_HOME="/path/to/your/cloned/directory"
-# export PATH="$SHELL_SCRIPTS_HOME/bin:$PATH"
+# Or manually edit .zshrc:
+# export SH_KIT_HOME="/path/to/your/cloned/directory"
+# export PATH="$SH_KIT_HOME/bin:$PATH"
 
-# 4. 쉘 재시작 또는 설정 재로드
+# 4. Restart shell or reload configuration
 source ~/.zshrc
 
-# 5. 설치 확인
+# 5. Verify installation
 gt doctor
 ```
 
-### 클론 위치 예시
+### Clone Location Examples
+
 ```bash
-# 홈 디렉토리에 클론
+# Clone to home directory
 git clone <repository-url> ~/sh-kit
 
-# 개발 도구 디렉토리에 클론  
+# Clone to development tools directory
 git clone <repository-url> ~/dev/sh-kit
 
-# 프로젝트 디렉토리에 클론
+# Clone to projects directory
 git clone <repository-url> ~/projects/sh-kit
 ```
 
-### 2. 직접 실행
+### 2. Direct Execution
 
 ```bash
-# 도구 목록 확인
+# Check available tools
 gt help
 
-# 명령어 실행
-gt bb              # 브랜치 도구
-gt c-s             # 커밋 선택
-gt doctor          # 의존성 체크
+# Execute commands
+gt bb              # Branch tools
+gt c-s             # Commit selection
+gt doctor          # Dependency check
 ```
 
-### 3. Git Alias 설정
+### 3. Git Alias Setup
 
 ```bash
-# .gitconfig에 추가
+# Add to .gitconfig
 [alias]
     bb = "!gt branch-tools"
     pfs = "!gt force-push-selected"
     c-s = "!gt commit-select"
-    doctor = "!gt alias-doctor"
+    al = "!gt alias-select"
 ```
 
-## 📋 의존성
+## 📋 Dependencies
 
-### 필수
-- **fzf**: 인터랙티브 선택을 위한 fuzzy finder
-- **bat**: 파일 미리보기 (cat 대체 가능)
+### Required
 
-### 선택사항
-- **pygmentize**: 코드 하이라이팅
+- **fzf**: Fuzzy finder for interactive selection
+- **bat**: File preview (fallback to cat if unavailable)
 
-설치 확인: `gt doctor`
+### Optional
 
-## 🔧 설정
+- **pygmentize**: Code syntax highlighting
 
-### 환경 변수
-- `SHELL_SCRIPTS_HOME`: 스크립트 홈 디렉토리 (클론한 경로에 맞게 설정)
+Verification: `gt doctor`
 
-### Git 설정
+## 🔧 Configuration
 
-`.gitconfig`의 alias들:
+### Environment Variables
+
+- `SH_KIT_HOME`: Script home directory (set according to cloned path)
+
+### Git Configuration
+
+Aliases in `.gitconfig`:
 
 ```ini
 [alias]
     bb = "!gt branch-tools"
     pfs = "!gt force-push-selected"
     c-s = "!gt commit-select"
-    doctor = "!gt alias-doctor"
+    al = "!gt alias-select"
 ```
 
-## 🎯 장점
+## 🎯 Benefits
 
-1. **단일 파일 관리**: 모든 Git 도구가 하나의 파일에 통합
-2. **다양한 사용 방식**: 직접 실행, Git alias 모두 지원
-3. **간단한 구조**: 복잡한 래퍼 없이 깔끔한 구조
-4. **표준 방식**: Unix/Linux 표준 bin 디렉토리 패턴
-5. **확장성**: 새로운 도구 추가가 용이한 구조
+1. **Single File Management**: All Git tools integrated in one file
+2. **Multiple Usage Patterns**: Support for both direct execution and Git aliases
+3. **Clean Structure**: Simple structure without complex wrappers
+4. **Standard Approach**: Unix/Linux standard bin directory pattern
+5. **Extensibility**: Easy structure for adding new tools
 
-## 🔗 심볼릭 링크 구조
+## 🔗 Symbolic Link Structure
 
-`bin/gt`는 `git/git-tools.sh`로의 심볼릭 링크입니다:
-- 실제 파일: `git/git-tools.sh` (모든 기능 구현)
-- 심볼릭 링크: `bin/gt` (PATH에서 접근 가능)
-- 장점: 단일 파일 관리, PATH 기반 실행, 확장성
+`bin/gt` is a symbolic link to `git/git-tools.sh`:
 
-### ⚡ 자동 반영 시스템
+- Actual file: `git/git-tools.sh` (all functionality implemented)
+- Symbolic link: `bin/gt` (accessible from PATH)
+- Benefits: Single file management, PATH-based execution, extensibility
 
-심볼릭 링크의 특성상 **`git-tools.sh` 파일을 수정하면 즉시 자동으로 반영됩니다**:
+### ⚡ Automatic Reflection System
+
+Due to symbolic link characteristics, **modifications to `git-tools.sh` are immediately reflected**:
 
 ```bash
-# git-tools.sh 수정 후
-gt help           # 즉시 반영됨 (재시작 불필요)
-git bb           # Git alias도 즉시 반영됨
+# After modifying git-tools.sh
+gt help           # Immediately reflected (no restart needed)
+git bb           # Git aliases also immediately reflected
 
-# 확인 방법
-gt doctor        # 의존성 및 설정 확인
+# Verification method
+gt doctor        # Check dependencies and configuration
 ```
 
-**주의사항:**
-- 새로운 함수 추가 시: 스크립트 수정만 하면 됨
-- 새로운 명령어 추가 시: 명령어 분기(case 문) 업데이트 필요
-- 파일 이동/삭제 시: 심볼릭 링크가 깨질 수 있으므로 주의
+**Important Notes:**
+
+- Adding new functions: Just modify the script
+- Adding new commands: Update command branching (case statements)
+- Moving/deleting files: Be careful as symbolic links may break
