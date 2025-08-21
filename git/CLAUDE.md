@@ -59,7 +59,7 @@ gt doctor         # dependency check
 # .gitconfig setup
 [alias]
     bb = "!gt branch-tools"
-    pfs = "!gt force-push-selected"
+    pfc = "!gt force-push-chain"
     c-s = "!gt commit-select"
     doctor = "!gt alias-doctor"
 ```
@@ -97,14 +97,14 @@ gt doctor    # Check all dependencies and git alias configuration
 ```bash
 gt branch-tools      # or gt bb
 gt commit-select     # or gt c-s
-gt force-push-selected  # or gt pfs
+gt force-push-chain     # or gt pfc
 gt help              # Show available commands
 ```
 
 ### Git Alias Usage
 ```bash
 git bb       # Branch tools
-git pfs      # Force push selected
+git pfc      # Force push chain
 git c-s      # Commit select
 git doctor   # Dependency check
 ```
@@ -210,7 +210,7 @@ gt doctor
 - `gt update`: Update with rebase
 
 ### Advanced Tools
-- `gt force-push-selected` (`gt pfs`): Multi-branch force push
+- `gt force-push-chain` (`gt pfc`): Multi-branch force push
 - `gt replay-onto`: Replay commits onto branch
 - `gt tag-refresh`: Interactive tag refresh
 
@@ -225,7 +225,7 @@ The tool integrates seamlessly with Git through aliases. Users typically add the
 ```ini
 [alias]
     bb = "!gt branch-tools"
-    pfs = "!gt force-push-selected"  
+    pfc = "!gt force-push-chain"  
     c-s = "!gt commit-select"
     doctor = "!gt alias-doctor"
 ```

@@ -48,7 +48,7 @@
 - `gt update` - rebase로 업데이트
 
 #### 🚀 고급 도구
-- `gt force-push-selected` (또는 `gt pfs`) - 인터랙티브 다중 브랜치 force push
+- `gt force-push-chain` (또는 `gt pfc`) - 인터랙티브 다중 브랜치 force push
 - `gt replay-onto` - 브랜치로 커밋 replay
 - `gt replay-onto-main` - 메인으로 커밋 replay
 - `gt tag-refresh` - 인터랙티브 태그 갱신
@@ -114,7 +114,7 @@ gt doctor          # 의존성 체크
 # .gitconfig에 추가
 [alias]
     bb = "!gt branch-tools"
-    pfs = "!gt force-push-selected"
+    pfc = "!gt force-push-chain"
     c-s = "!gt commit-select"
     al = "!gt alias-select"
 ```
@@ -142,7 +142,7 @@ gt doctor          # 의존성 체크
 ```ini
 [alias]
     bb = "!gt branch-tools"
-    pfs = "!gt force-push-selected"
+    pfc = "!gt force-push-chain"
     c-s = "!gt commit-select"
     al = "!gt alias-select"
 ```

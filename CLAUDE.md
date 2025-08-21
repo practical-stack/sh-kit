@@ -62,7 +62,7 @@ Git aliases for seamless workflow integration:
 ```bash
 git bb            # Branch tools
 git c-s           # Commit select  
-git pfs           # Force push selected
+git pfc           # Force push chain
 ```
 
 ### 3. Direct Function Access (Advanced)

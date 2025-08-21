@@ -54,7 +54,7 @@ Comprehensive Git workflow enhancement tools with interactive operations.
 
 #### 🚀 Advanced Tools
 
-- `gt force-push-selected` (or `gt pfs`) - Interactive multi-branch force push
+- `gt force-push-chain` (or `gt pfc`) - Interactive multi-branch force push
 - `gt replay-onto` - Replay commits onto branch
 - `gt replay-onto-main` - Replay commits onto main
 - `gt tag-refresh` - Interactive tag refresh
@@ -122,7 +122,7 @@ gt doctor          # Dependency check
 # Add to .gitconfig
 [alias]
     bb = "!gt branch-tools"
-    pfs = "!gt force-push-selected"
+    pfc = "!gt force-push-chain"
     c-s = "!gt commit-select"
     al = "!gt alias-select"
 ```
@@ -153,7 +153,7 @@ Aliases in `.gitconfig`:
 ```ini
 [alias]
     bb = "!gt branch-tools"
-    pfs = "!gt force-push-selected"
+    pfc = "!gt force-push-chain"
     c-s = "!gt commit-select"
     al = "!gt alias-select"
 ```

@@ -45,7 +45,7 @@ source ~/.zshrc
 # 4. Git alias 설정 (.gitconfig.tmpl 참조)
 git config --global alias.bb "!gt branch-tools"
 git config --global alias.c-s "!gt commit-select"
-git config --global alias.pfs "!gt force-push-selected"
+git config --global alias.pfc "!gt force-push-chain"
 git config --global alias.al "!gt alias-select"
 
 # 5. 실행 권한 확인 (필요시)

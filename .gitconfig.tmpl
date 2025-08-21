@@ -97,8 +97,8 @@
 		git push origin $(git branch --show-current)"
 	psf = "!# custom - Push current branch to remote force.;\n\
 		git push origin $(git branch --show-current) --force-with-lease --no-verify"
-	pfs = "!# Push force selected - Force push selected branches;\n \
-		gt force-push-selected"
+	pfc = "!# Push force chain - Force push branch chain;\n \
+		gt force-push-chain"
 	pl = "!# custom - Pull current branch from remote.;\n\
 		git pull origin $(git branch --show-current)"
 	
@@ -266,7 +266,7 @@
 # Core shell-scripts commands:
 # git bb               # Interactive branch management
 # git c-s              # Interactive commit selection  
-# git pfs              # Force push selected branches
+# git pfc              # Force push branch chain
 # git alias-doctor     # Check dependencies
 #
 # Branch operations:
@@ -304,7 +304,7 @@
 # Method 2: Quick essential setup
 # git config --global alias.bb "!gt branch-tools"
 # git config --global alias.c-s "!gt commit-select"
-# git config --global alias.pfs "!gt force-push-selected"
+# git config --global alias.pfc "!gt force-push-chain"
 # git config --global alias.alias-doctor "!gt alias-doctor"
 
 # Method 3: Include this file (advanced users)
@@ -332,4 +332,4 @@
 # ✅ Copy-to-clipboard functionality for branches and commits
 # ✅ Enhanced logging with multiple format options
 # ✅ Comprehensive branch, commit, stash, and diff management
-# ✅ Advanced operations like replay-onto and force-push-selected
+# ✅ Advanced operations like replay-onto and force-push-chain
