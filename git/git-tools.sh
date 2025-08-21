@@ -364,14 +364,11 @@ git_force_push_chain() {
     echo ""
     echo "Select starting branch (all branches from this to current will be force pushed):"
     
-    # Get child branches of current branch (branches that have current branch as ancestor)
+    # Get branches that are ancestors of current branch (potential starting points for chain)
     start_branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ | \
         while read branch; do
             if [[ "$branch" != "$current_branch" && "$branch" != "main" ]]; then
-                # Check if current branch is an ancestor of this branch
-                if git merge-base --is-ancestor "$current_branch" "$branch" 2>/dev/null; then
-                    echo "$branch"
-                fi
+                git merge-base --is-ancestor "$branch" "$current_branch" 2>/dev/null && echo "$branch"
             fi
         done | \
         fzf --prompt="Select starting branch: " --height=15)
@@ -381,14 +378,21 @@ git_force_push_chain() {
         exit 1
     fi
     
-    # Get all branches in the path from start branch to current branch
-    branches_to_push=$(git rev-list --ancestry-path "${start_branch}..${current_branch}" --reverse | \
-        while read commit; do
-            git branch --contains "$commit" | grep -v "main" | sed 's/^[ *]*//; /^$/d'
-        done | sort -u)
-    
-    # Add the start branch and current branch to ensure they're included
-    branches_to_push=$(printf '%s\n%s\n%s' "$start_branch" "$branches_to_push" "$current_branch" | sort -u)
+    # Get all branches that are in the chain from start branch to current branch
+    branches_to_push=$(
+        # Always include start and current branch
+        printf '%s\n%s\n' "$start_branch" "$current_branch"
+        # Find branches in the chain
+        git for-each-ref --format='%(refname:short)' refs/heads/ | \
+        while read branch; do
+            if [[ "$branch" != "main" && "$branch" != "$start_branch" && "$branch" != "$current_branch" ]]; then
+                if git merge-base --is-ancestor "$start_branch" "$branch" 2>/dev/null && \
+                   git merge-base --is-ancestor "$branch" "$current_branch" 2>/dev/null; then
+                    echo "$branch"
+                fi
+            fi
+        done
+    )
     
     if [[ -z "$branches_to_push" ]]; then
         echo "No branches found from $start_branch to $current_branch"
