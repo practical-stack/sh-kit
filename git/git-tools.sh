@@ -355,33 +355,49 @@ git_update() {
 # FORCE PUSH TOOLS
 # ============================================================================
 
-git_force_push_selected() {
-    local current_branch selected_branches confirm
+git_force_push_chain() {
+    local current_branch start_branch branches_to_push
     local failed_branches='' success_count=0 total_count=0
     
     current_branch=$(git branch --show-current)
     echo "Current branch: $current_branch"
     echo ""
-    echo "Select branches to force push (multiple selection with TAB):"
+    echo "Select starting branch (all branches from this to current will be force pushed):"
     
-    selected_branches=$(git branch | grep -v "main" | sed 's/^[ *]*//; /^$/d' | \
-        fzf --multi --prompt="Select branches to force push: " --height=15)
+    # Get child branches of current branch (branches that have current branch as ancestor)
+    start_branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ | \
+        while read branch; do
+            if [[ "$branch" != "$current_branch" && "$branch" != "main" ]]; then
+                # Check if current branch is an ancestor of this branch
+                if git merge-base --is-ancestor "$current_branch" "$branch" 2>/dev/null; then
+                    echo "$branch"
+                fi
+            fi
+        done | \
+        fzf --prompt="Select starting branch: " --height=15)
     
-    if [[ -z "$selected_branches" ]]; then
-        echo "No branches selected. Exiting."
+    if [[ -z "$start_branch" ]]; then
+        echo "No branch selected. Exiting."
         exit 1
     fi
     
-    echo "Selected branches:"
-    printf '%s\n' "$selected_branches"
+    # Get all branches in the path from start branch to current branch
+    branches_to_push=$(git rev-list --ancestry-path "${start_branch}..${current_branch}" --reverse | \
+        while read commit; do
+            git branch --contains "$commit" | grep -v "main" | sed 's/^[ *]*//; /^$/d'
+        done | sort -u)
+    
+    # Add the start branch and current branch to ensure they're included
+    branches_to_push=$(printf '%s\n%s\n%s' "$start_branch" "$branches_to_push" "$current_branch" | sort -u)
+    
+    if [[ -z "$branches_to_push" ]]; then
+        echo "No branches found from $start_branch to $current_branch"
+        exit 1
+    fi
+    
+    echo "Branches to be force pushed:"
+    printf '%s\n' "$branches_to_push"
     echo ""
-    
-    echo -n "Force push these branches? (y/N): "
-    read -r confirm
-    if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
-        echo "Cancelled."
-        exit 1
-    fi
     
     while IFS= read -r branch; do
         branch=$(printf '%s' "$branch" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
@@ -402,7 +418,7 @@ git_force_push_selected() {
                 fi
             fi
         fi
-    done <<< "$selected_branches"
+    done <<< "$branches_to_push"
     
     echo ""
     printf 'Summary: %d/%d branches pushed successfully\n' "$success_count" "$total_count"
@@ -610,7 +626,7 @@ git_tools_help() {
     echo "   git_update                 - Update with rebase"
     echo ""
     echo "🚀 Advanced Tools:"
-    echo "   git_force_push_selected    - Interactive multi-branch force push"
+    echo "   git_force_push_chain       - Interactive multi-branch force push"
     echo "   git_replay_onto            - Replay commits onto branch"
     echo "   git_replay_onto_main       - Replay commits onto main"
     echo "   git_tag_refresh            - Refresh tags interactively"
@@ -665,7 +681,7 @@ if [[ "${BASH_SOURCE[0]:-}" == "${0:-}" ]] 2>/dev/null; then
             esac ;;
         
         # Advanced Tools
-        "force-push-selected"|"pfs") git_force_push_selected "${@:2}" ;;
+        "force-push-chain"|"pfc") git_force_push_chain "${@:2}" ;;
         "replay-onto"|"ro") git_replay_onto "${@:2}" ;;
         "replay-onto-main"|"rom") git_replay_onto_main "${@:2}" ;;
         "tag-refresh"|"tr") git_tag_refresh "${@:2}" ;;
