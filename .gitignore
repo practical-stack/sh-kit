@@ -75,6 +75,10 @@ __pycache__/
 # Local Claude settings (user-specific)
 .claude/settings.local.json
 
+# PR template temporary files
+pr_body.md
+pr_body_updated.md
+
 
 
 
